@@ -50,6 +50,7 @@ export default function SearchInput() {
 
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gray-900">
+      <h3 className="mb-4 text-2xl font-semibold">Search by keyword</h3>
       <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto">
         <div className="relative">
           <Input
@@ -57,10 +58,10 @@ export default function SearchInput() {
             placeholder="Beach, Dogs, Sunset, Cats etc..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-8 text-xl rounded-full border-2 border-gray-300 focus:border-[#17A34A] focus:ring-2 focus:ring-[#17A34A] focus:outline-none"
+            className="w-full pl-16 pr-4 py-8 text-xl rounded-full border-2 border-gray-300 focus:border-[#17A34A] focus:ring-2 focus:ring-[#17A34A] focus:outline-none"
           />
           <Search
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            className="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400"
             size={24}
           />
         </div>
