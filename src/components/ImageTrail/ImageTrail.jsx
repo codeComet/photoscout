@@ -109,7 +109,7 @@ export default function ImageTrail() {
   console.log(isMoving);
 
   return (
-    <div className="fixed inset-0 pointer-events-none">
+    <div className="absolute inset-0 pointer-events-none">
       {trailImages.map((src, index) => (
         <div
           key={index}

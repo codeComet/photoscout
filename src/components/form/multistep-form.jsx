@@ -14,6 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Timeline from "./timeline";
+import Link from "next/link";
 
 const services = [
   {
@@ -59,23 +60,23 @@ export default function MultistepForm() {
     e.preventDefault();
     // Here you would typically send the data to your backend
     console.log("Submitted API Keys:", apiKeys);
-    
+
     // Check if all selected services have API keys
     const missingKeys = selectedServices.some(
       (serviceId) => !apiKeys[serviceId] || apiKeys[serviceId].trim() === ""
     );
 
     if (missingKeys) {
-        toast.error("Please enter API keys for all selected services");
-        return;
+      toast.error("Please enter API keys for all selected services");
+      return;
     }
 
     Object.keys(apiKeys).forEach((serviceId) => {
-        localStorage.setItem(`apiKey_${serviceId}`, apiKeys[serviceId]);
+      localStorage.setItem(`apiKey_${serviceId}`, apiKeys[serviceId]);
     });
 
     toast.success("API Keys saved successfully");
-    
+
     setStep(3);
   };
 
@@ -124,7 +125,15 @@ export default function MultistepForm() {
                     }
                     required
                   />
-                  <p className="text-[12px] mt-0">You can get it from <a href={services.find((s) => s.id === serviceId).apiLink} className="text-blue-500">here</a></p>
+                  <p className="text-[12px] mt-0">
+                    You can get it from{" "}
+                    <a
+                      href={services.find((s) => s.id === serviceId).apiLink}
+                      className="text-blue-500"
+                    >
+                      here
+                    </a>
+                  </p>
                 </div>
               ))}
             </form>
@@ -133,7 +142,9 @@ export default function MultistepForm() {
             <div className="text-center">
               <h3 className="text-lg font-medium mb-2">Confirmation</h3>
               <p>Your API keys have been saved successfully!</p>
-              <Button className="mt-4">Let's Find Images</Button>
+              <Link href="/search">
+                <Button className="mt-4">Let's Find Images</Button>
+              </Link>
             </div>
           )}
         </CardContent>
@@ -152,7 +163,11 @@ export default function MultistepForm() {
             </Button>
           )}
           {step === 2 && <Button onClick={handleSubmit}>Submit</Button>}
-          {step === 3 && <Button onClick={() => setStep(1)} variant="primary">Start Over</Button>}
+          {step === 3 && (
+            <Button onClick={() => setStep(1)} variant="primary">
+              Start Over
+            </Button>
+          )}
         </CardFooter>
       </Card>
     </div>

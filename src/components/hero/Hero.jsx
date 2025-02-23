@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 const Hero = () => {
   return (
-    <div className="h-screen">
+    <div className="h-screen relative overflow-hidden">
       <Aurora />
       {/* <ImageTrail /> */}
 
@@ -21,7 +21,7 @@ const Hero = () => {
             Get Started
           </Button>
           <Button className="bg-transparent hover:bg-transparent text-slate-50 hover:text-slate-50 px-8 py-6 text-lg font-semibold">
-            Learn More <ArrowRight className="ml-2 font-semibold" />
+            Learn More <ArrowRight size={36} className="ml-2 font-semibold" />
           </Button>
         </div>
       </div>
