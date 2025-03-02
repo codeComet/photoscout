@@ -1,11 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from 'next/navigation';
 
 const SearchContext = createContext();
 
-export const SearchProvider = ({ children }) => {
+// Create a wrapper component that uses useSearchParams
+const SearchProviderInner = ({ children }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -69,6 +70,15 @@ export const SearchProvider = ({ children }) => {
     >
       {children}
     </SearchContext.Provider>
+  );
+};
+
+// Wrap the inner provider with Suspense
+export const SearchProvider = ({ children }) => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchProviderInner>{children}</SearchProviderInner>
+    </Suspense>
   );
 };
 
