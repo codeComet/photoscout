@@ -2,10 +2,11 @@ import React from "react";
 import { Button } from "../ui/button";
 import { Cable, Download, Filter, Images } from "lucide-react";
 import * as motion from "motion/react-client";
+import Link from "next/link";
 
 const Features = () => {
   return (
-    <section className="text-gray-400 body-font bg-gradient-to-b from-black to-[#0a0f18]">
+    <section className="text-gray-400 body-font bg-gradient-to-b from-black to-[#0a0f18]" id="features">
       <motion.div // Animate when this value changes:
         initial={{ opacity: 0, y: 100 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -72,9 +73,11 @@ const Features = () => {
             </div>
           </div>
           <div className="flex justify-center items-center mt-20">
-            <Button className=" bg-white hover:bg-green-600 text-black hover:text-slate-50 px-6 py-5 text-lg font-semibold">
-              Let's Start
-            </Button>
+            <Link href="/get-started">
+              <Button className=" bg-white hover:bg-green-600 text-black hover:text-slate-50 px-6 py-5 text-lg font-semibold">
+                Let's Start
+              </Button>
+            </Link>
           </div>
         </div>
       </motion.div>

@@ -7,7 +7,7 @@ import {
 
 export default function Faqs() {
   return (
-    <div className="py-24 bg-[#0a0f18]">
+    <div className="py-24 bg-[#0a0f18]" id="faq">
       <div className="w-[50%] mx-auto">
         <h2 className="text-3xl font-bold text-white text-center mb-10">Frequently Asked Questions</h2>
         <Accordion type="single" collapsible className="w-full">

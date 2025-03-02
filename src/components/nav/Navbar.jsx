@@ -9,7 +9,7 @@ import { useAnimate, stagger, motion } from "framer-motion";
 
 const menu = [
   { id: 2, title: "Features", url: "#features" },
-  { id: 3, title: "FAQs", url: "#faqs" },
+  { id: 3, title: "FAQs", url: "#faq" },
   { id: 4, title: "Newsletter", url: "#newsletter" },
 ];
 
