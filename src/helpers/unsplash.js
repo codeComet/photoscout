@@ -15,16 +15,16 @@ export async function searchUnsplash(query, page = 1, filterParams) {
     query: urlQuery,
     page: urlPage,
     per_page,
-    q: urlQuality,
-    orientation: urlOrientation,
     client_id: apiKey,
   };
 
   // Add additional filter parameters if they exist
-  if (urlWidth !== '') params.w = urlWidth;
-  if (filterParams?.height !== '') params.h = filterParams.height;
-
-  if(urlOrientation === "square") params.orientation = "squarish";
+  if (urlWidth) params.w = urlWidth;
+  if (filterParams?.height) params.h = filterParams.height;
+  if (urlQuality) params.q = urlQuality;
+  if (urlOrientation) {
+    params.orientation = urlOrientation === "square" ? "squarish" : urlOrientation;
+  }
 
   const searchURL = `${baseURL}search/photos/?${new URLSearchParams(params).toString()}`;
   console.log(searchURL);

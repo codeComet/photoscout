@@ -16,12 +16,12 @@ export async function searchPexels(query, page = 1, filterParams) {
     query: urlQuery,
     page: urlPage,
     per_page,
-    orientation: urlOrientation,
   };
 
   // Add additional filter parameters if they exist
+  if (urlOrientation) params.orientation = urlOrientation;
   if (urlWidth) params.width = urlWidth;
-  if (urlHeight) params.height = filterParams.height;
+  if (urlHeight) params.height = urlHeight;
 
   const searchURL = `${baseURL}/search?${new URLSearchParams(
     params

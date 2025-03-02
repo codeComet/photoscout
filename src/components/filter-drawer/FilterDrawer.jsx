@@ -46,10 +46,11 @@ export function FilterDrawer() {
   };
 
   useEffect(() => {
-    const savedFilters = localStorage.getItem("filterParams");
-    if (savedFilters) {
-      setFilterParams(JSON.parse(savedFilters));
-    }
+    // Remove this effect as we don't want to load filters on initial render
+    // const savedFilters = localStorage.getItem("filterParams");
+    // if (savedFilters) {
+    //   setFilterParams(JSON.parse(savedFilters));
+    // }
   }, []);
 
   //check if filter has value
@@ -73,8 +74,8 @@ export function FilterDrawer() {
     setFilterParams({
       width: "",
       height: "",
-      quality: "75",
-      orientation: "portrait",
+      quality: "",  // Remove default value
+      orientation: "",  // Remove default value
       page: 1,
     });
   };

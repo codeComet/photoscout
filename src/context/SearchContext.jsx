@@ -14,33 +14,28 @@ export const SearchProvider = ({ children }) => {
     searchParams.get('services')?.split(',').filter(Boolean) || []
   );
   const [services, setServices] = useState([]);
-  const [filterParams, setFilterParams] = useState(() => {
-    // Try to get filter params from URL first, then localStorage, then defaults
-    const urlWidth = searchParams.get('width');
-    const urlHeight = searchParams.get('height');
-    const urlQuality = searchParams.get('quality');
-    const urlOrientation = searchParams.get('orientation');
-    
-    return {
-      width: urlWidth || "",
-      height: urlHeight || "",
-      quality: urlQuality || "75",
-      orientation: urlOrientation !== '' ? urlOrientation : "portrait",
-      page: 1,
-    };
-  });
+  const [filterParams, setFilterParams] = useState(() => ({
+    width: "",
+    height: "",
+    quality: "",
+    orientation: "",
+    page: 1,
+  }));
 
-  // Update URL when state changes
+  // Update URL only when there are actual search parameters
   useEffect(() => {
     const params = new URLSearchParams();
     
+    // Only add parameters if they have values
     if (query) params.set('q', query);
     if (selectedServices.length > 0) params.set('services', selectedServices.join(','));
     if (filterParams.width) params.set('width', filterParams.width);
     if (filterParams.height) params.set('height', filterParams.height);
     if (filterParams.quality) params.set('quality', filterParams.quality);
     if (filterParams.orientation) params.set('orientation', filterParams.orientation);
-    if (filterParams.page) params.set('page', filterParams.page);
+    
+    // Only add page parameter if we're beyond page 1 and there's a search query
+    if (filterParams.page > 1 && query) params.set('page', filterParams.page);
 
     const newUrl = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
     router.push(newUrl);

@@ -25,14 +25,12 @@ const orientation = {
     page: urlPage,
     per_page,
     image_type: "photo",
-    orientation: orientation[urlOrientation] || 'all',
-    min_width: urlWidth || "",
-    min_height: urlHeight || "",
   };
 
   // Add additional filter parameters if they exist
-  if (urlWidth !== "") params.min_width = urlWidth;
-  if (urlHeight!== "") params.min_height = urlHeight;
+  if (urlOrientation) params.orientation = orientation[urlOrientation] || 'all';
+  if (urlWidth) params.min_width = urlWidth;
+  if (urlHeight) params.min_height = urlHeight;
 
   const searchURL = `${baseURL}?${new URLSearchParams(params).toString()}`;
   console.log(searchURL);
