@@ -2,6 +2,8 @@
 
 PhotoScout is a modern web application built with Next.js that allows users to explore and discover high-quality photos from multiple sources (Unsplash, Pexels, PixaBay etc.). It provides a seamless interface for browsing, searching, and downloading beautiful images.
 
+Demo: https://myphotoscout.netlify.app/
+
 ## Features
 
 - Browse through a curated collection of high-quality photos
