@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useAnimate, stagger, motion } from "framer-motion";
@@ -136,13 +136,7 @@ const Navbar = () => {
               {isOpen ? (
                 <X className="block h-6 w-6" aria-hidden="true" />
               ) : (
-                <Image
-                  src="/assets/img/hamburger.svg"
-                  alt="hamburger"
-                  width={44}
-                  height={44}
-                  className="block outline-none z-10"
-                />
+                <Menu/>
               )}
             </motion.button>
           </div>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Slider } from "./step-slider";
 
 export default function StepSlider({filterParams, setFilterParams}) {
-  const [value, setValue] = useState([filterParams?.quality !== '' ? filterParams?.quality : 100]);
+  const [value, setValue] = useState([filterParams?.quality !== '' ? filterParams?.quality : 75]);
 
   useEffect(() => {
     if (filterParams?.quality) {

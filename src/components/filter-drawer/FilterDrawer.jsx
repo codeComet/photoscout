@@ -41,7 +41,7 @@ export function FilterDrawer() {
       page: 1,
     };
     setFilterParams(newParams);
-    localStorage.setItem("filterParams", JSON.stringify(newParams));
+    // URL update is now handled by SearchContext
     toast.success("Filter applied");
   };
 
@@ -73,7 +73,7 @@ export function FilterDrawer() {
     setFilterParams({
       width: "",
       height: "",
-      quality: "100",
+      quality: "75",
       orientation: "",
       page: 1,
     });
@@ -132,7 +132,8 @@ export function FilterDrawer() {
                     <RadioGroup
                       className="flex gap-4 items-center"
                       name="orientation"
-                      onChange={handleChangeInput}
+                      value={filterParams.orientation}
+                      onValueChange={(value) => handleChangeInput({ target: { name: 'orientation', value }})}
                     >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem
