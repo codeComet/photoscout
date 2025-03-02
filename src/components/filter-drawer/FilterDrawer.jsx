@@ -74,7 +74,7 @@ export function FilterDrawer() {
       width: "",
       height: "",
       quality: "75",
-      orientation: "",
+      orientation: "portrait",
       page: 1,
     });
   };

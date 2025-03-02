@@ -31,6 +31,8 @@ const MasonryGallery = ({ images }) => {
   const normalizeFullSource = (image) => {
     if (typeof image === 'string') return image;
     if (image.unsplashDownloadUrl) return image.unsplashDownloadUrl;
+    if(image.pexelsDownloadUrl) return image.pexelsDownloadUrl;
+    if(image.pixabayDownloadUrl) return image.pixabayDownloadUrl;
     return "https://placehold.co/300x500";
   };
 

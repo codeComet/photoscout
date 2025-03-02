@@ -9,6 +9,8 @@ import { toast } from "sonner";
 import { useSearch } from "@/context/SearchContext";
 import { FilterDrawer } from "@/components/filter-drawer/FilterDrawer";
 import { searchUnsplash } from "@/helpers/unsplash";
+import { searchPexels } from "@/helpers/pexels";
+import { searchPixabay } from "@/helpers/pixabay";
 import Result from "./Result";
 
 export default function SearchInput() {
@@ -28,14 +30,37 @@ export default function SearchInput() {
 
 useEffect(() => {
   // Load saved search results and state on initial render
-  const savedResults =
+  const savedUnsplashResults =
     JSON.parse(localStorage.getItem("unsplash_search_results")) || [];
-  const savedPage = localStorage.getItem("unsplash_current_page");
-  const savedQuery = localStorage.getItem("unsplash_current_query");
+  const savedPexelsResults =
+    JSON.parse(localStorage.getItem("pexels_search_results")) || [];
+  const savedPixabayResults =
+    JSON.parse(localStorage.getItem("pixabay_search_results")) || [];
 
-  if (savedResults.length > 0 && savedQuery) {
-    setImages(savedResults);
-    setFilterParams((prev) => ({ ...prev, page: parseInt(savedPage) || 1 }));
+  const savedQuery =
+    localStorage.getItem("unsplash_current_query") ||
+    localStorage.getItem("pexels_current_query") ||
+    localStorage.getItem("pixabay_current_query");
+
+  if (
+    (savedUnsplashResults.length > 0 ||
+      savedPexelsResults.length > 0 ||
+      savedPixabayResults.length > 0) &&
+    savedQuery
+  ) {
+    setImages([
+      ...savedUnsplashResults,
+      ...savedPexelsResults,
+      ...savedPixabayResults,
+    ]);
+    setFilterParams((prev) => ({
+      ...prev,
+      page: Math.max(
+        parseInt(localStorage.getItem("unsplash_current_page")) || 1,
+        parseInt(localStorage.getItem("pexels_current_page")) || 1,
+        parseInt(localStorage.getItem("pixabay_current_page")) || 1
+      ),
+    }));
     setQuery(savedQuery);
   }
 
@@ -47,92 +72,140 @@ useEffect(() => {
 }, [setServices, setQuery, setFilterParams]); 
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (query.trim() === "") {
-      toast.warning("Please enter a search query");
-      return;
-    }
-    if (selectedServices.length === 0) {
-      toast.warning("Please select at least one service");
-      return;
-    }
 
-    setLoading(true);
-    setImages([]);
-    setFilterParams(prev => ({ ...prev, page: 1 }));
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (query.trim() === "") {
+    toast.warning("Please enter a search query");
+    return;
+  }
+  if (selectedServices.length === 0) {
+    toast.warning("Please select at least one service");
+    return;
+  }
 
-    // Clear previous search results and state from localStorage
-    localStorage.removeItem('unsplash_search_results');
-    localStorage.removeItem('unsplash_current_page');
-    localStorage.removeItem('unsplash_current_query');
-
-    try {
-      for (const service of selectedServices) {
-        toast.success(`Searching ${service} for: ${query}`);
-        const apiKey = localStorage.getItem(`apiKey_${service}`);
-        if (!apiKey) {
-          toast.warning(`API key for ${service} is not set`);
-          continue;
-        }
-        
-        if (service === "unsplash") {
-          const results = await searchUnsplash(query, 1, filterParams);
-          toast.success(`Showing ${results.results.length} results from ${service}`);
-          setImages(results.results);
-          
-          // Save state to localStorage
-          localStorage.setItem('unsplash_search_results', JSON.stringify(results.results));
-          localStorage.setItem('unsplash_current_page', '1');
-          localStorage.setItem('unsplash_current_query', query);
-        }
-      }
-    } catch (error) {
-      toast.error(`Error: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-const handleLoadMore = async () => {
   setLoading(true);
+  setImages([]); // Reset images on new search
+  setFilterParams((prev) => ({ ...prev, page: 1 }));
+
+  // Clear localStorage to avoid mixing results
+  ["unsplash", "pexels", "pixabay"].forEach((service) => {
+    localStorage.removeItem(`${service}_search_results`);
+    localStorage.removeItem(`${service}_current_page`);
+    localStorage.setItem(`${service}_current_query`, query);
+  });
+
   try {
-    for (const service of selectedServices) {
+    const fetchPromises = selectedServices.map(async (service) => {
+      toast.success(`Searching ${service} for: ${query}`);
       const apiKey = localStorage.getItem(`apiKey_${service}`);
       if (!apiKey) {
         toast.warning(`API key for ${service} is not set`);
-        continue;
+        return [];
       }
 
       if (service === "unsplash") {
-        const nextPage = filterParams.page + 1;
-        const results = await searchUnsplash(query, nextPage, filterParams);
-
-        // Retrieve stored images
-        const existingImages = JSON.parse(
-          localStorage.getItem("unsplash_search_results") || "[]"
-        );
-
-        // Append new images to the existing ones
-        const newImages = [...existingImages, ...results.results];
-
-        setImages(newImages);
-        setFilterParams((prev) => ({ ...prev, page: nextPage }));
-
-        // Save the updated images list and page number in localStorage
+        const results = await searchUnsplash(query, 1, filterParams);
         localStorage.setItem(
           "unsplash_search_results",
-          JSON.stringify(newImages)
+          JSON.stringify(results.results)
         );
-        localStorage.setItem("unsplash_current_page", nextPage.toString());
+        localStorage.setItem("unsplash_current_page", "1");
+        return results.results;
       }
-    }
+
+      if (service === "pexels") {
+        const results = await searchPexels(query, 1, filterParams);
+        localStorage.setItem(
+          "pexels_search_results",
+          JSON.stringify(results.results)
+        );
+        localStorage.setItem("pexels_current_page", "1");
+        return results.results;
+      }
+
+      if (service === "pixabay") {
+        const results = await searchPixabay(query, 1, filterParams);
+        localStorage.setItem(
+          "pixabay_search_results",
+          JSON.stringify(results.results)
+        );
+        localStorage.setItem("pixabay_current_page", "1");
+        return results.results;
+      }
+
+      return [];
+    });
+
+    const resultsArray = await Promise.all(fetchPromises);
+    const newImages = resultsArray.flat(); // Flatten the array of arrays
+
+    setImages(newImages);
   } catch (error) {
     toast.error(`Error: ${error.message}`);
   } finally {
     setLoading(false);
   }
 };
+
+const handleLoadMore = async () => {
+  setLoading(true);
+  try {
+    let nextPage = filterParams.page + 1;
+
+    const fetchPromises = selectedServices.map(async (service) => {
+      const apiKey = localStorage.getItem(`apiKey_${service}`);
+      if (!apiKey) {
+        toast.warning(`API key for ${service} is not set`);
+        return [];
+      }
+
+      if (service === "unsplash") {
+        const results = await searchUnsplash(query, nextPage, filterParams);
+        localStorage.setItem(
+          "unsplash_search_results",
+          JSON.stringify([...images, ...results.results])
+        );
+        localStorage.setItem("unsplash_current_page", nextPage.toString());
+        return results.results;
+      }
+
+      if (service === "pexels") {
+        const results = await searchPexels(query, nextPage, filterParams);
+        localStorage.setItem(
+          "pexels_search_results",
+          JSON.stringify([...images, ...results.results])
+        );
+        localStorage.setItem("pexels_current_page", nextPage.toString());
+        return results.results;
+      }
+
+      if (service === "pixabay") {
+        const results = await searchPixabay(query, nextPage, filterParams);
+        localStorage.setItem(
+          "pixabay_search_results",
+          JSON.stringify([...images, ...results.results])
+        );
+        localStorage.setItem("pixabay_current_page", nextPage.toString());
+        return results.results;
+      }
+
+      return [];
+    });
+
+    const resultsArray = await Promise.all(fetchPromises);
+    const newImages = [...images, ...resultsArray.flat()]; // Preserve previous images and append new ones
+
+    setImages(newImages);
+    setFilterParams((prev) => ({ ...prev, page: nextPage }));
+  } catch (error) {
+    toast.error(`Error: ${error.message}`);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
 
   return (

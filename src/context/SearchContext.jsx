@@ -25,7 +25,7 @@ export const SearchProvider = ({ children }) => {
       width: urlWidth || "",
       height: urlHeight || "",
       quality: urlQuality || "75",
-      orientation: urlOrientation || "",
+      orientation: urlOrientation !== '' ? urlOrientation : "portrait",
       page: 1,
     };
   });
