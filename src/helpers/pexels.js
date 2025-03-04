@@ -69,11 +69,11 @@ function processImageUrl(rawUrl, params) {
   // Add new parameters
   const queryChar = downloadUrl.includes("?") ? "&" : "?";
   if (params.width && params.height) {
-    downloadUrl += `${queryChar}width=${params.width}&height=${params.height}`;
+    downloadUrl += `${queryChar}width=${params.width}&height=${params.height}&fit=min`;
   } else if (params.width) {
-    downloadUrl += `${queryChar}width=${params.width}`;
+    downloadUrl += `${queryChar}width=${params.width}&fit=min`;
   } else if (params.height) {
-    downloadUrl += `${queryChar}height=${params.height}`;
+    downloadUrl += `${queryChar}height=${params.height}&fit=min`;
   }
 
   return downloadUrl;

@@ -12,7 +12,6 @@ import { searchUnsplash } from "@/helpers/unsplash";
 import { searchPexels } from "@/helpers/pexels";
 import { searchPixabay } from "@/helpers/pixabay";
 import Result from "./Result";
-import AuthCheck from "@/components/auth/auth-check";
 import { useRouter } from "next/navigation";
 
 export default function SearchInput() {
@@ -91,6 +90,7 @@ useEffect(() => {
     setServices((prevServices) => [
       ...new Set([...prevServices, ...serviceIds]),
     ]);
+    localStorage.setItem("services", JSON.stringify(serviceIds));
   }, [setServices, setQuery, setFilterParams]);
 
   const handleSubmit = async (e) => {
@@ -227,7 +227,6 @@ useEffect(() => {
 
   return (
     <>
-      {/* <AuthCheck routeIfNotAuthenticated="/get-started" /> */}
       <div className="min-h-screen w-full px-5 py-12 [background:radial-gradient(125%_125%_at_50%_10%,#0a0f18_40%,#17A34A_100%)] flex flex-col justify-center items-center">
         <div className="flex flex-col items-center justify-center my-5 min-w-[600px]">
           <h3 className="mb-4 text-2xl font-semibold">Search by keyword</h3>

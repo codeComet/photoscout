@@ -45,12 +45,16 @@ export function FilterDrawer() {
     toast.success("Filter applied");
   };
 
+  // Update localStorage whenever filterParams change
   useEffect(() => {
-    // Remove this effect as we don't want to load filters on initial render
-    // const savedFilters = localStorage.getItem("filterParams");
-    // if (savedFilters) {
-    //   setFilterParams(JSON.parse(savedFilters));
-    // }
+    localStorage.setItem("filterParams", JSON.stringify(filterParams));
+  }, [filterParams]);
+
+  useEffect(() => {
+    const savedFilters = localStorage.getItem("filterParams");
+    if (savedFilters && Object.keys(filterParams).length === 0) {
+      setFilterParams(JSON.parse(savedFilters));
+    }
   }, []);
 
   //check if filter has value
@@ -71,13 +75,15 @@ export function FilterDrawer() {
 
   //reset filter
   const handleResetFilter = () => {
-    setFilterParams({
+    const resetParams = {
       width: "",
       height: "",
-      quality: "",  // Remove default value
-      orientation: "",  // Remove default value
+      quality: "",
+      orientation: "",
       page: 1,
-    });
+    };
+    setFilterParams(resetParams);
+    localStorage.removeItem("filterParams"); // Clear from localStorage when resetting
   };
 
   return (

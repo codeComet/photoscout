@@ -8,7 +8,7 @@ const Hero = () => {
   return (
     <div className="h-screen relative overflow-hidden">
       <Aurora />
-      <ImageTrail />
+      {/* <ImageTrail /> */}
 
       <div className="container text-center absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
         <h1 className="text-7xl font-open_sans font-bold">

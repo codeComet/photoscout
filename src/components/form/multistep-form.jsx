@@ -14,7 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Timeline from "./Timeline";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const services = [
   {
@@ -35,6 +35,7 @@ export default function MultistepForm() {
   const [step, setStep] = useState(1);
   const [selectedServices, setSelectedServices] = useState([]);
   const [apiKeys, setApiKeys] = useState({});
+  const router = useRouter();
 
   const handleServiceToggle = (serviceId) => {
     setSelectedServices((prev) =>
@@ -58,8 +59,6 @@ export default function MultistepForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log("Submitted API Keys:", apiKeys);
 
     // Check if all selected services have API keys
     const missingKeys = selectedServices.some(
@@ -71,13 +70,22 @@ export default function MultistepForm() {
       return;
     }
 
+    // Store API keys and selected services
     Object.keys(apiKeys).forEach((serviceId) => {
       localStorage.setItem(`apiKey_${serviceId}`, apiKeys[serviceId]);
     });
+    localStorage.setItem("services", JSON.stringify(selectedServices));
 
     toast.success("API Keys saved successfully");
-
     setStep(3);
+  };
+
+  const handleFindImages = () => {
+    // Ensure storage event is dispatched after all localStorage operations
+    setTimeout(() => {
+      window.dispatchEvent(new Event("localStorageChange"));
+      router.push("/search");
+    }, 0);
   };
 
   return (
@@ -142,9 +150,10 @@ export default function MultistepForm() {
             <div className="text-center">
               <h3 className="text-lg font-medium mb-2">Confirmation</h3>
               <p>Your API keys have been saved successfully!</p>
-              <Link href="/search">
-                <Button className="mt-4">Let's Find Images</Button>
-              </Link>
+
+              <Button className="mt-4" onClick={handleFindImages}>
+                Let's Find Images
+              </Button>
             </div>
           )}
         </CardContent>

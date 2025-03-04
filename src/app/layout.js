@@ -1,9 +1,9 @@
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/nav/Navbar";
 import Footer from "@/components/footer/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { SearchProvider } from "@/context/SearchContext";
+import NavbarSelector from "@/components/nav/NavbarSelector";
 
 const open_sans = Open_Sans({
   variable: "--font-open-sans",
@@ -19,8 +19,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${open_sans.variable} antialiased`}>
-        <Navbar />
-        <SearchProvider>{children}</SearchProvider>
+        <SearchProvider>
+          <NavbarSelector/>
+          {children}
+        </SearchProvider>
         <Toaster />
         <Footer />
       </body>
