@@ -11,6 +11,22 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 const SearchContext = createContext();
 
+const allServices = [
+  {
+    id: "unsplash",
+    name: "Unsplash",
+    apiLink: "https://unsplash.com/developers",
+  },
+  { id: "pexels", name: "Pexels", apiLink: "https://www.pexels.com/api/" },
+  {
+    id: "giphy",
+    name: "Giphy",
+    apiLink: "https://developers.giphy.com/docs/api/",
+  },
+  { id: "pixabay", name: "Pixabay", apiLink: "https://pixabay.com/api/docs/" },
+];
+
+
 const SearchProviderInner = ({ children }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -101,6 +117,7 @@ const SearchProviderInner = ({ children }) => {
   return (
     <SearchContext.Provider
       value={{
+        allServices,
         query,
         setQuery,
         services,

@@ -15,27 +15,15 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Timeline from "./Timeline";
 import { useRouter } from "next/navigation";
-
-const services = [
-  {
-    id: "unsplash",
-    name: "Unsplash",
-    apiLink: "https://unsplash.com/developers",
-  },
-  { id: "pexels", name: "Pexels", apiLink: "https://www.pexels.com/api/" },
-  {
-    id: "giphy",
-    name: "Giphy",
-    apiLink: "https://developers.giphy.com/docs/api/",
-  },
-  { id: "pixabay", name: "Pixabay", apiLink: "https://pixabay.com/api/docs/" },
-];
+import { useSearch } from "@/context/SearchContext";
 
 export default function MultistepForm() {
   const [step, setStep] = useState(1);
   const [selectedServices, setSelectedServices] = useState([]);
   const [apiKeys, setApiKeys] = useState({});
   const router = useRouter();
+  const {allServices} = useSearch();
+  const [services, setServices] = useState(allServices);
 
   const handleServiceToggle = (serviceId) => {
     setSelectedServices((prev) =>

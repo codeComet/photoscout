@@ -1,3 +1,5 @@
+"use client";
+import { useState, useEffect } from "react";
 import ImageTrail from "@/components/ImageTrail/ImageTrail";
 import Aurora from "./Aurora/Aurora";
 import { Button } from "@/components/ui/button";
@@ -5,12 +7,41 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const Hero = () => {
+  const [hasApiKey, setHasApiKey] = useState(false);
+
+  const loadServices = () => {
+    try {
+      const services = JSON.parse(localStorage.getItem("services")) || [];
+      if (services.length !== 0) {
+        setHasApiKey(true);
+        return;
+      } else {
+        setHasApiKey(false);
+        return;
+      }
+    } catch (error) {
+      console.error("Error loading services:", error);
+      setHasApiKey(false);
+    }
+  };
+
+  useEffect(() => {
+    loadServices();
+    // Listen for custom localStorage change event
+    window.addEventListener("localStorageChange", loadServices);
+
+    return () => {
+      window.removeEventListener("localStorageChange", loadServices);
+    };
+  }, []);
+  console.log(hasApiKey);
+
   return (
     <div className="h-screen relative overflow-hidden">
       <Aurora />
-      {/* <ImageTrail /> */}
+      <ImageTrail />
 
-      <div className="container text-center absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+      <div className="container text-center absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-10">
         <h1 className="text-7xl font-open_sans font-bold">
           Welcome to PhotoScout
         </h1>
@@ -19,16 +50,29 @@ const Hero = () => {
           and more - all in one place
         </p>
         <div className="flex items-center justify-center gap-5 mt-8">
-          <Link href="/get-started">
-            <Button className="bg-white hover:bg-green-600 text-black hover:text-slate-50 px-8 py-6 text-lg font-semibold">
-              Get Started
-            </Button>
-          </Link>
-          <Link href="/#faq">
-            <Button className="bg-transparent hover:bg-transparent text-slate-50 hover:text-slate-50 px-8 py-6 text-lg font-semibold">
-              Learn More <ArrowRight size={36} className="ml-2 font-semibold" />
-            </Button>
-          </Link>
+          {!hasApiKey ? (
+            <div>
+              <Link href="/get-started">
+                <Button className="bg-white hover:bg-green-600 text-black hover:text-slate-50 px-8 py-6 text-lg font-semibold">
+                  Get Started
+                </Button>
+              </Link>
+              <Link href="/#faq">
+                <Button className="bg-transparent hover:bg-transparent text-slate-50 hover:text-slate-50 px-8 py-6 text-lg font-semibold">
+                  Learn More{" "}
+                  <ArrowRight size={36} className="ml-2 font-semibold" />
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div>
+              <Link href="/search">
+                <Button className="bg-white hover:bg-green-600 text-black hover:text-slate-50 px-8 py-6 text-lg font-semibold">
+                  Go To Search
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>
