@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 import {
   Menubar,
   MenubarContent,
@@ -13,11 +14,13 @@ import {
 import UserImg from "./UserImg";
 import { ApiAddDialogue } from "../dialogues/ApiAddDialogue";
 import ApiDeleteDialogue from "../dialogues/ApiDeleteDialogue";
+import { motion } from "framer-motion";
 
 const AuthenticatedNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAddDialogue, setShowAddDialogue] = useState(false);
   const [clearApiDialogue, setClearApiDialogue] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,9 +44,9 @@ const AuthenticatedNavbar = () => {
       }`}
     >
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[93px]">
+        <div className="flex items-center justify-between h-[70px] md:h-[93px]">
           <div className="flex-shrink-0">
-            <Link href="/" className="text-2xl font-bold text-white">
+            <Link href="/" className="text-xl md:text-2xl font-bold text-white">
               PhotoScout
             </Link>
           </div>
@@ -68,17 +71,61 @@ const AuthenticatedNavbar = () => {
                 </MenubarContent>
               </MenubarMenu>
             </Menubar>
-            <ApiAddDialogue
-              open={showAddDialogue}
-              onOpenChange={setShowAddDialogue}
-            />
-            <ApiDeleteDialogue
-              open={clearApiDialogue}
-              onOpenChange={setClearApiDialogue}
-            />
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <motion.button
+              onClick={() => setIsOpen(!isOpen)}
+              className="inline-flex items-center justify-center p-3 rounded-md text-white hover:text-gray-300 focus:outline-none"
+              whileTap={{ scale: 0.95 }}
+            >
+              {isOpen ? (
+                <X className="h-7 w-7" aria-hidden="true" />
+              ) : (
+                <Menu className="h-7 w-7" aria-hidden="true" />
+              )}
+            </motion.button>
           </div>
         </div>
       </div>
+
+      {/* Mobile menu */}
+      <div
+        className={`md:hidden bg-primary overflow-hidden transition-all duration-300 ${
+          isOpen ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="px-4 pt-2 pb-3 space-y-1">
+          <button
+            onClick={() => {
+              setShowAddDialogue(true);
+              setIsOpen(false);
+            }}
+            className="block w-full text-left px-4 py-3 text-base font-medium text-white hover:bg-gray-800 rounded-md"
+          >
+            Add/Update API key
+          </button>
+          <button
+            onClick={() => {
+              setClearApiDialogue(true);
+              setIsOpen(false);
+            }}
+            className="block w-full text-left px-4 py-3 text-base font-medium text-rose-600 hover:bg-gray-800 rounded-md"
+          >
+            Clear Keys
+          </button>
+        </div>
+      </div>
+
+      <ApiAddDialogue
+        open={showAddDialogue}
+        onOpenChange={setShowAddDialogue}
+      />
+      <ApiDeleteDialogue
+        open={clearApiDialogue}
+        onOpenChange={setClearApiDialogue}
+      />
     </nav>
   );
 };

@@ -62,7 +62,7 @@ const MasonryGallery = ({ images }) => {
             transition={{ duration: 0.5, delay: index * 0.1 }}
             className="mb-4 relative"
           >
-            <div className="relative aspect-[3/4] w-full">
+            <div className="relative w-full">
               <a href={image.download} target="_blank" rel="noopener noreferrer">
                 <Image
                   src={image.src}

@@ -42,11 +42,15 @@ export function ApiAddDialogue({ open, onOpenChange }) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Add/Update API key</DialogTitle>
+      <DialogContent className="max-w-[95vw] sm:max-w-[425px] p-4 sm:p-6 rounded-lg">
+        <DialogHeader className="space-y-2 sm:space-y-3">
+          <DialogTitle className="text-lg sm:text-xl font-semibold text-center">
+            Add/Update API key
+          </DialogTitle>
         </DialogHeader>
-        <ApiKeyTab onOpenChange={onOpenChange}/>
+        <div className="mt-2 sm:mt-4">
+          <ApiKeyTab onOpenChange={onOpenChange} />
+        </div>
       </DialogContent>
     </Dialog>
   );

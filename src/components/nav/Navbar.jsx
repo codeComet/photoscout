@@ -96,9 +96,9 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[93px]">
+        <div className="flex items-center justify-between h-[70px] md:h-[93px]">
           <div className="flex-shrink-0">
-            <Link href="/" className="text-2xl font-bold text-white">
+            <Link href="/" className="text-xl md:text-2xl font-bold text-white">
               PhotoScout
             </Link>
           </div>
@@ -129,14 +129,14 @@ const Navbar = () => {
           <div className="md:hidden">
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-gray-300 focus:outline-none"
+              className="inline-flex items-center justify-center p-3 rounded-md text-white hover:text-gray-300 focus:outline-none"
               whileTap={{ scale: 0.95 }}
             >
               <span className="sr-only">Open main menu</span>
               {isOpen ? (
-                <X className="block h-6 w-6" aria-hidden="true" />
+                <X className="block h-7 w-7" aria-hidden="true" />
               ) : (
-                <Menu/>
+                <Menu className="block h-7 w-7" aria-hidden="true" />
               )}
             </motion.button>
           </div>
@@ -149,15 +149,15 @@ const Navbar = () => {
         }`}
       >
         <div className="flex flex-col justify-between h-full">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center h-full flex flex-col items-center justify-center">
+          <div className="px-4 pt-4 pb-3 space-y-2 sm:px-6 text-center h-full flex flex-col items-center justify-center">
             {menu.map((item) => (
               <div
                 key={item.id}
-                className="menu-item opacity-0 scale-75 translate-y-12"
+                className="menu-item opacity-0 scale-75 translate-y-12 w-full"
               >
                 <Link
                   href={item.url}
-                  className={`block px-3 py-8 border-none font-bold text-3xl leading-8 bg-primary ${
+                  className={`block px-4 py-6 sm:py-8 border-none font-bold text-2xl sm:text-3xl leading-8 bg-primary ${
                     pathname === item.url
                       ? "text-[#64CC1F] relative active-link-mbl"
                       : "text-[#999D95] hover:text-white"
@@ -170,9 +170,9 @@ const Navbar = () => {
               </div>
             ))}
           </div>
-          <div className="py-6 px-5 order-button opacity-0 scale-75 translate-y-12">
-            <Link href="/get-started">
-              <button className="bg-transparent hover:bg-secondary text-secondary px-6 py-[9px] rounded-full border border-secondary text-sm font-medium w-full">
+          <div className="py-4 px-4 sm:px-6 order-button opacity-0 scale-75 translate-y-12">
+            <Link href="/get-started" onClick={() => setIsOpen(false)}>
+              <button className="bg-transparent hover:bg-secondary text-secondary hover:text-white px-6 py-3 rounded-full border-2 border-secondary text-base font-medium w-full transition-all duration-300">
                 Get Started
               </button>
             </Link>

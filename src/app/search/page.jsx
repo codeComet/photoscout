@@ -227,9 +227,9 @@ useEffect(() => {
 
   return (
     <>
-      <div className="min-h-screen w-full px-5 py-12 [background:radial-gradient(125%_125%_at_50%_10%,#0a0f18_40%,#17A34A_100%)] flex flex-col justify-center items-center">
-        <div className="flex flex-col items-center justify-center my-5 min-w-[600px]">
-          <h3 className="mb-4 text-2xl font-semibold">Search by keyword</h3>
+      <div className="min-h-screen w-full px-4 sm:px-5 py-8 sm:py-12 [background:radial-gradient(125%_125%_at_50%_10%,#0a0f18_40%,#17A34A_100%)] flex flex-col justify-center items-center">
+        <div className="flex flex-col items-center justify-center my-3 sm:my-5 w-full max-w-[600px] min-w-0 sm:min-w-[600px]">
+          <h3 className="mb-3 sm:mb-4 text-xl sm:text-2xl font-semibold">Search by keyword</h3>
           <form onSubmit={handleSubmit} className="w-full">
             <div className="relative">
               <Input
@@ -237,16 +237,16 @@ useEffect(() => {
                 placeholder="Beach, Dogs, Sunset, Cats etc..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="w-full pl-16 pr-4 py-8 text-xl rounded-full border-2 border-gray-300 focus:border-[#17A34A] focus:ring-2 focus:ring-[#17A34A] focus:outline-none"
+                className="w-full pl-12 sm:pl-16 pr-4 py-6 sm:py-8 text-base sm:text-xl rounded-full border-2 border-gray-300 focus:border-[#17A34A] focus:ring-2 focus:ring-[#17A34A] focus:outline-none"
               />
               <Search
-                className="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400"
-                size={24}
+                className="absolute left-4 sm:left-5 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
               />
             </div>
-            <div className="mt-5 flex gap-5 items-center justify-center">
-              <p className="mb-0">Get images from: </p>
-              <div className="flex flex-wrap gap-5">
+            <div className="mt-4 sm:mt-5 flex flex-col sm:flex-row gap-3 sm:gap-5 items-start sm:items-center justify-start sm:justify-center">
+              <p className="mb-0 text-sm sm:text-base">Get images from: </p>
+              <div className="flex flex-wrap gap-3 sm:gap-5">
                 {services.map((service, index) => (
                   <div key={index} className="flex items-center space-x-2">
                     <Checkbox
@@ -257,7 +257,7 @@ useEffect(() => {
                     />
                     <label
                       htmlFor={service}
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                      className="text-xs sm:text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                     >
                       {service}
                     </label>
@@ -272,7 +272,7 @@ useEffect(() => {
               <Button
                 type="submit"
                 disabled={loading}
-                className="mt-5 w-full bg-white text-black hover:text-white py-6 rounded-full hover:bg-green-600 disabled:opacity-50"
+                className="mt-4 sm:mt-5 w-full bg-white text-black hover:text-white py-5 sm:py-6 rounded-full hover:bg-green-600 disabled:opacity-50 text-sm sm:text-base"
               >
                 {loading ? "Searching..." : "Search"}
               </Button>
@@ -282,11 +282,11 @@ useEffect(() => {
         <Result images={images} loading={loading} />
 
         {/* Load More */}
-        <div>
+        <div className="w-full max-w-[600px]">
           {images.length > 0 && (
             <Button
               type="button"
-              className="mt-5 w-full bg-white text-black hover:text-white py-6 rounded-full hover:bg-green-600 disabled:opacity-50"
+              className="mt-4 sm:mt-5 w-full bg-white text-black hover:text-white py-5 sm:py-6 rounded-full hover:bg-green-600 disabled:opacity-50 text-sm sm:text-base"
               onClick={() => handleLoadMore()}
             >
               Load More
